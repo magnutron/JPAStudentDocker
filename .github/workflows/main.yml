@@ -15,10 +15,10 @@ jobs:
 
       - name: Setup SSH
         run: |
-          sudo mkdir -p ~/.ssh
-          sudo echo "${{ secrets.AZURE_VM_SSH_KEY }}" > ~/.ssh/id_rsa
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AZURE_VM_SSH_KEY }}" | sudo tee ~/.ssh/id_rsa > /dev/null
           sudo chmod 600 ~/.ssh/id_rsa
-          sudo ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
+          sudo ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} | sudo tee -a ~/.ssh/known_hosts > /dev/null
 
       - name: SSH and Deploy
         run: |
@@ -26,4 +26,8 @@ jobs:
             cd /path/to/your/repository
             sudo git pull origin main
             sudo docker build -t your_app_name .
-            sudo docker run -d -p 8080:8080
+            sudo docker run -d -p 8080:8080 your_app_name
+          EOF
+      env:
+        AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
+        AZURE_VM_USERNAME: ${{ secrets.AZURE_VM_USERNAME }}
