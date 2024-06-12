@@ -28,6 +28,6 @@ jobs:
             sudo docker build -t your_app_name .
             sudo docker run -d -p 8080:8080 your_app_name
           EOF
-      env:
-        AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
-        AZURE_VM_USERNAME: ${{ secrets.AZURE_VM_USERNAME }}
+        env:
+          AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
+          AZURE_VM_USERNAME: ${{ secrets.AZURE_VM_USERNAME }}
