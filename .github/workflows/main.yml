@@ -18,13 +18,23 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AZURE_VM_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
           ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
 
       - name: SSH and Deploy
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-            cd /path/to/your/repository
-            sudo git pull origin main
+            set -e  # Exit immediately if a command exits with a non-zero status
+            REPO_DIR="/home/${{ secrets.AZURE_VM_USERNAME }}/JPAStudentDocker"
+            if [ ! -d "$REPO_DIR" ]; then
+              git clone git@github.com:magnutron/JPAStudentDocker.git $REPO_DIR
+            fi
+            cd $REPO_DIR
+            git pull origin main
+            if [ ! -f Dockerfile ]; then
+              echo "Dockerfile not found!"
+              exit 1
+            fi
             sudo docker build -t your_app_name .
             sudo docker run -d -p 8080:8080 your_app_name
           EOF
