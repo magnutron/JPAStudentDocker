@@ -13,7 +13,7 @@ public class InitData implements CommandLineRunner{
 
     @Autowired
     StudentRepository studentRepository;
-
+    // Comment made by me to test Github actions
     @Override
     public void run(String... args) throws Exception {
         Student s1 = new Student();
