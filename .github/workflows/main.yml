@@ -10,24 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.AZURE_VM_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H <AZURE_VM_IP> >> ~/.ssh/known_hosts
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AZURE_VM_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
 
-    - name: SSH and Deploy
-      run: |
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no <USERNAME>@<AZURE_VM_IP> << 'EOF'
-          cd /path/to/your/repository
-          git pull origin master
-          docker build -t your_app_name .
-          docker run -d -p 8080:8080 your_app_name
-        EOF
-      env:
-        AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
-        USERNAME: ${{ secrets.AZURE_VM_USERNAME }}
+      - name: SSH and Deploy
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+            cd /path/to/your/repository
+            git pull origin main
+            docker build -t your_app_name .
+            docker run -d -p 8080:8080
