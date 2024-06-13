@@ -13,9 +13,11 @@ RUN ls -l
 # Make the mvnw script executable
 RUN chmod +x ./mvnw
 
-# Run Maven to build the project and generate the JAR file
-RUN ./mvnw -version
-RUN ./mvnw clean package -DskipTests
+# Debugging step: Check the .m2 directory
+RUN ls -l /root/.m2
+
+# Run Maven to build the project and generate the JAR file with full debug logging
+RUN ./mvnw clean package -DskipTests -X
 
 # Use a smaller base image for the final container
 FROM openjdk:8-jdk-alpine
