@@ -35,8 +35,10 @@ jobs:
               echo "Dockerfile not found!"
               exit 1
             fi
+            sudo docker stop your_app_name || true
+            sudo docker rm your_app_name || true
             sudo docker build -t your_app_name .
-            sudo docker run -d -p 8080:8080 your_app_name
+            sudo docker run -d -p 8080:8080 --name your_app_name your_app_name
           EOF
         env:
           AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
