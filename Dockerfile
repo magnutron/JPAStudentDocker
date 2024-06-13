@@ -11,7 +11,7 @@ COPY . .
 RUN chmod +x ./mvnw
 
 # Run Maven to build the project and generate the JAR file with full debug logging
-RUN ./mvnw clean package -DskipTests -X
+RUN ./mvnw clean package -DskipTests
 
 # Use a smaller base image for the final container
 FROM openjdk:8-jdk-alpine
