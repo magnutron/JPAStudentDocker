@@ -7,14 +7,8 @@ WORKDIR /app
 # Copy the entire project into the container
 COPY . .
 
-# Debugging step: List directory contents
-RUN ls -l
-
 # Make the mvnw script executable
 RUN chmod +x ./mvnw
-
-# Debugging step: Check the .m2 directory
-RUN ls -l /root/.m2
 
 # Run Maven to build the project and generate the JAR file with full debug logging
 RUN ./mvnw clean package -DskipTests -X
