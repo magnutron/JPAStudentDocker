@@ -27,7 +27,7 @@ jobs:
             set -e  # Exit immediately if a command exits with a non-zero status
             REPO_DIR="/home/${{ secrets.AZURE_VM_USERNAME }}/JPAStudentDocker"
             if [ ! -d "$REPO_DIR" ]; then
-              git clone git@github.com:magnutron/JPAStudentDocker.git $REPO_DIR
+              git clone https://github.com/magnutron/JPAStudentDocker.git $REPO_DIR
             fi
             cd $REPO_DIR
             git pull origin main
