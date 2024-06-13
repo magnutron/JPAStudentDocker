@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the project files to the working directory
 COPY . .
 
+# Grant execution permission to the Maven wrapper
+RUN chmod +x mvnw
+
 # Debugging step: List directory contents and Maven settings
 RUN ls -la
 RUN cat .mvn/wrapper/maven-wrapper.properties
