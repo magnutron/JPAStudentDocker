@@ -14,6 +14,9 @@ RUN chmod +x mvnw
 RUN ls -la
 RUN cat .mvn/wrapper/maven-wrapper.properties
 
+# Ensure the Maven wrapper is executable
+RUN ./mvnw --version
+
 # Run Maven to build the project and generate the JAR file
 RUN ./mvnw clean package -DskipTests
 
